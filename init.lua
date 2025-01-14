@@ -326,6 +326,45 @@ require('lazy').setup({
     },
   },
 
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000, -- Ensure it loads first
+    config = function()
+      require('catppuccin').setup {
+        flavour = 'frappe', -- Choose the variant: frappe, latte, macchiato, or mocha
+        integrations = {
+          treesitter = true,
+          lsp_trouble = true,
+          telescope = true,
+          nvimtree = true,
+          cmp = true,
+        },
+      }
+      vim.cmd.colorscheme 'catppuccin' -- Automatically set the colorscheme
+    end,
+  },
+
+  {
+    'lervag/vimtex',
+    ft = { 'tex' }, -- Load only for .tex files
+    config = function()
+      -- Configure vimtex
+      vim.g.vimtex_view_method = 'skim' -- Use Skim for PDF preview
+      vim.g.vimtex_compiler_method = 'latexmk' -- Use latexmk for building
+      vim.g.vimtex_quickfix_mode = 0 -- Disable quickfix list by default
+
+      -- Add SyncTeX options for proper Skim integration
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          '-synctex=1',
+          '-interaction=nonstopmode',
+          '-file-line-error',
+        },
+      }
+    end,
+  },
+
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -651,6 +690,22 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      require('lspconfig').texlab.setup {
+        settings = {
+          texlab = {
+            build = {
+              executable = 'latexmk',
+              args = { '-pdf', '-interaction=nonstopmode', '-synctex=1', '%f' },
+              onSave = true,
+            },
+            forwardSearch = {
+              executable = 'skim',
+              args = { '--reuse-window', '%p' },
+            },
+          },
+        },
+      }
+
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -889,15 +944,15 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'latex' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
+        additional_vim_regex_highlighting = false,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
