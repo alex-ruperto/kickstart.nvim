@@ -269,6 +269,24 @@ require('lazy').setup({
   --
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
+  {
+    'catppuccin/nvim',
+    name = 'catpuccin',
+    config = function()
+      require('catppuccin').setup {
+        flavour = 'frappe', -- Choose the Frappe variant
+        integrations = {
+          treesitter = true, -- Enable Treesitter integration
+          cmp = true, -- For nvim-cmp integration (optional)
+          gitsigns = true, -- For Gitsigns integration (optional)
+          telescope = true, -- For Telescope integration (optional)
+          nvimtree = true, -- For NvimTree integration (optional
+          lsp_trouble = true, -- For LSP trouble integration (optional)
+        },
+      }
+      vim.cmd.colorscheme 'catppuccin' -- Apply the colorscheme
+    end,
+  },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
