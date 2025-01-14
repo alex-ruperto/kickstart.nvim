@@ -269,6 +269,14 @@ require('lazy').setup({
   --
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
+
+  {
+    'lervag/vimtex',
+    config = function()
+      vim.g.vimtex_view_method = 'zathura' -- Use your preferred PDF viewer
+      vim.g.vimtex_compiler_method = 'latexmk' -- Use latexmk for compilation
+    end,
+  },
   {
     'catppuccin/nvim',
     name = 'catpuccin',
