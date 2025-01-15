@@ -120,8 +120,8 @@ end)
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Run C++ file
-vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal g++ % -o %:r && ./%:r<CR>', { noremap = true, silent = true })
+-- Run C++ file (using make)
+vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal ~/.config/nvim/scripts/run_make.sh<CR>', { noremap = true, silent = true })
 -- Save undo history
 vim.opt.undofile = true
 
