@@ -81,6 +81,23 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
 
+    dap.adapters.python = {
+      type = 'executable',
+      command = '/usr/local/bin/python3', -- Global Python interpreter
+      args = { '-m', 'debugpy.adapter' },
+    }
+
+    dap.configurations.python = {
+      {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file',
+        program = '${file}', -- The current file in Neovim
+        pythonPath = function()
+          return '/usr/local/bin/python3' -- Explicitly use the global Python path
+        end,
+      },
+    }
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
