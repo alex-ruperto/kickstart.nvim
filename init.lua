@@ -269,6 +269,18 @@ require('lazy').setup({
   --
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
+  
+  {
+    "lervag/vimtex",
+    lazy=false,
+    config=function()
+      vim.g.vimtex_view_method = "skew" -- latex previewer
+      vim.g.vimtex_compiler_method = "tectonic" -- tectonic for compilation
+      vim.g.vimtex_compiler_tectonic = { options = { "--keep-intermediates", "--keep-logs"} }
+    end
+  },
+
+  -- catppuccin theme
   {
     'catppuccin/nvim',
     name = 'catpuccin',
