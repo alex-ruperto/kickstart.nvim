@@ -97,8 +97,11 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- Make line numbers default
+-- Show the absolute number for current line
 vim.opt.number = true
+-- Show the relative number for all other lines
+vim.opt.relativenumber = true
+
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
@@ -269,15 +272,23 @@ require('lazy').setup({
   --
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
-  
+
   {
-    "lervag/vimtex",
-    lazy=false,
-    config=function()
-      vim.g.vimtex_view_method = "skew" -- latex previewer
-      vim.g.vimtex_compiler_method = "tectonic" -- tectonic for compilation
-      vim.g.vimtex_compiler_tectonic = { options = { "--keep-intermediates", "--keep-logs"} }
-    end
+    'lervag/vimtex',
+    lazy = false,
+    config = function()
+      vim.g.vimtex_view_method = 'general' -- latex previewer
+      vim.g.vimtex_compiler_method = 'latexmk' -- latexmk for compilation
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          '-pdf', -- compile directly to pdf
+          '-shell-escape', -- enable this for advanced features
+          '-synctex=1', -- enable synctex for forward and reverse search
+          '-interaction=nonstopmode', -- run in non-stop mnode. no stopping for errors
+        },
+      }
+      vim.g.vimtex_quickfix_mode = 0 -- disables console opening each time on each :w
+    end,
   },
 
   -- catppuccin theme
