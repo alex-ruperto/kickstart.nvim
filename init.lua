@@ -125,6 +125,13 @@ vim.opt.breakindent = true
 
 -- Run C++ file
 vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal g++ % -o %:r && ./%:r<CR>', { noremap = true, silent = true })
+
+-- Enforce 4 space tabstop for C# and CSX files.
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "cs", "csx" },
+    command = "setlocal tabstop=4 shiftwidth=4 expandtab"
+})
+
 -- Save undo history
 vim.opt.undofile = true
 
