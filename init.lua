@@ -97,8 +97,11 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- Make line numbers default
+-- Show the absolute number for current line
 vim.opt.number = true
+-- Show the relative number for all other lines
+vim.opt.relativenumber = true
+
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
@@ -122,6 +125,13 @@ vim.opt.breakindent = true
 
 -- Run C++ file
 vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal g++ % -o %:r && ./%:r<CR>', { noremap = true, silent = true })
+
+-- Enforce 4 space tabstop for C# and CSX files.
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "cs", "csx" },
+    command = "setlocal tabstop=4 shiftwidth=4 expandtab"
+})
+
 -- Save undo history
 vim.opt.undofile = true
 
@@ -256,6 +266,74 @@ require('lazy').setup({
     },
   },
 
+  -- Obsidian Plugin
+  {
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+    --   -- refer to `:h file-pattern` for more examples
+    --   "BufReadPre path/to/my-vault/*.md",
+    --   "BufNewFile path/to/my-vault/*.md",
+    -- },
+    dependencies = {
+      -- Required.
+      'nvim-lua/plenary.nvim',
+
+      -- see below for full list of optional dependencies 👇
+    },
+    opts = {
+      workspaces = {
+        {
+          name = 'work',
+          path = 'C:/Users/usarup/Documents/VI-Work',
+        },
+      },
+
+      ui = { enable = false },
+    },
+  },
+
+  -- Markdown plugin
+  {
+    'tadmccorkle/markdown.nvim',
+    ft = 'markdown', -- or 'event = "VeryLazy"'
+    opts = {
+      -- configuration here or empty for defaults
+    },
+  },
+
+  -- Markdown Previewer
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    build = 'cd app && npm install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
+
+  -- LeetCode plugin
+  {
+    'kawre/leetcode.nvim',
+    build = ':TSUpdate html', -- if you have `nvim-treesitter` installed
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      -- "ibhagwan/fzf-lua",
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+    },
+    opts = {
+      -- configuration goes here
+      lang = 'python',
+    },
+  },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -269,6 +347,26 @@ require('lazy').setup({
   --
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
+
+  {
+    'lervag/vimtex',
+    lazy = false,
+    config = function()
+      vim.g.vimtex_view_method = 'general' -- latex previewer
+      vim.g.vimtex_compiler_method = 'latexmk' -- latexmk for compilation
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          '-pdf', -- compile directly to pdf
+          '-shell-escape', -- enable this for advanced features
+          '-synctex=1', -- enable synctex for forward and reverse search
+          '-interaction=nonstopmode', -- run in non-stop mnode. no stopping for errors
+        },
+      }
+      vim.g.vimtex_quickfix_mode = 0 -- disables console opening each time on each :w
+    end,
+  },
+
+  -- catppuccin theme
   {
     'catppuccin/nvim',
     name = 'catpuccin',
