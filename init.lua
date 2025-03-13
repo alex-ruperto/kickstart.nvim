@@ -127,9 +127,9 @@ vim.opt.breakindent = true
 vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal g++ % -o %:r && ./%:r<CR>', { noremap = true, silent = true })
 
 -- Enforce 4 space tabstop for C# and CSX files.
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "cs", "csx" },
-    command = "setlocal tabstop=4 shiftwidth=4 expandtab"
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cs', 'csx' },
+  command = 'setlocal tabstop=4 shiftwidth=4 expandtab',
 })
 
 -- Save undo history
@@ -360,6 +360,7 @@ require('lazy').setup({
           '-shell-escape', -- enable this for advanced features
           '-synctex=1', -- enable synctex for forward and reverse search
           '-interaction=nonstopmode', -- run in non-stop mnode. no stopping for errors
+          '-output-directory=build', -- direct all auxilary files to build folder
         },
       }
       vim.g.vimtex_quickfix_mode = 0 -- disables console opening each time on each :w
