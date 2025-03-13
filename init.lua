@@ -349,6 +349,17 @@ require('lazy').setup({
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
   {
+    'rhysd/vim-grammarous', -- Load the vim-grammarous plugin from GitHub
+    ft = { 'tex', 'markdown' }, -- Only load this plugin for TeX and Markdown file types
+    config = function() -- Begin plugin configuration function
+      vim.cmd [[
+        nmap <leader>g :GrammarousCheck<CR>   " Map <leader>g to trigger a grammar check on the current buffer
+        nmap <leader>G :GrammarousClear<CR>   " Map <leader>G to clear any grammar check highlights
+      ]]
+    end, -- End of the configuration function
+  },
+
+  {
     'lervag/vimtex',
     lazy = false,
     config = function()
