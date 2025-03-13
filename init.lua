@@ -357,7 +357,6 @@ require('lazy').setup({
       vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
       vim.g.vimtex_compiler_method = 'latexmk' -- latexmk for compilation
       vim.g.vimtex_compiler_latexmk = {
-        build_dir = 'build',
         options = {
           '-pdf', -- compile directly to pdf
           '-shell-escape', -- enable this for advanced features
