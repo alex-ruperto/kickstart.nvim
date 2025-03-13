@@ -764,6 +764,15 @@ require('lazy').setup({
             },
           },
         },
+
+        ltex = { -- ltex‑ls for grammar, style, and spell checking
+          settings = {
+            ltex = {
+              language = 'en-US', -- Set the primary language (adjust as needed)
+              diagnosticSeverity = 'information', -- Use "information" level for diagnostics
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
