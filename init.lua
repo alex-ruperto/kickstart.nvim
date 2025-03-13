@@ -353,14 +353,16 @@ require('lazy').setup({
     lazy = false,
     config = function()
       vim.g.vimtex_view_method = 'general' -- latex previewer
+      vim.g.vimtex_view_general_viewer = 'SumatraPDF'
+      vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
       vim.g.vimtex_compiler_method = 'latexmk' -- latexmk for compilation
       vim.g.vimtex_compiler_latexmk = {
+        build_dir = 'build',
         options = {
           '-pdf', -- compile directly to pdf
           '-shell-escape', -- enable this for advanced features
           '-synctex=1', -- enable synctex for forward and reverse search
           '-interaction=nonstopmode', -- run in non-stop mnode. no stopping for errors
-          '-output-directory=build', -- direct all auxilary files to build folder
         },
       }
       vim.g.vimtex_quickfix_mode = 0 -- disables console opening each time on each :w
