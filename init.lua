@@ -773,6 +773,37 @@ require('lazy').setup({
             },
           },
         },
+
+        --[[ 
+    Create a custom command to toggle the ltex‑ls server (grammar checking) 
+    on or off for the current buffer.
+    --]]
+        vim.api.nvim_create_user_command('ToggleGrammar', function()
+          local current_buf = vim.api.nvim_get_current_buf() -- Get the current buffer number
+          local ltex_client = nil -- Variable to hold the ltex‑ls client, if active
+          -- Iterate over all active LSP clients in the current buffer
+          for _, client in ipairs(vim.lsp.get_active_clients { bufnr = current_buf }) do
+            if client.name == 'ltex' then -- Check if this client is ltex‑ls
+              ltex_client = client -- Save the client info
+              break -- No need to check further
+            end
+          end
+          if ltex_client then -- If ltex‑ls is active,
+            vim.lsp.stop_client(ltex_client.id) -- stop it (disable grammar checking)
+            print 'Grammar checking (ltex‑ls) disabled' -- Inform the user
+          else
+            vim.cmd 'LspStart ltex' -- Otherwise, start the ltex‑ls server
+            print 'Grammar checking (ltex‑ls) enabled' -- Inform the user
+          end
+        end, {}), -- This defines the :ToggleGrammar command
+
+        --[[ 
+    With this configuration:
+    1. ltex‑ls is set up to use U.S. English for grammar checking.
+    2. Diagnostics will show as "information" level messages.
+    3. You can toggle grammar checking by running the command :ToggleGrammar.
+       This stops or starts the ltex‑ls server for the current buffer.
+  --]]
       }
 
       -- Ensure the servers and tools above are installed
