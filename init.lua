@@ -363,19 +363,28 @@ require('lazy').setup({
     'lervag/vimtex',
     lazy = false,
     config = function()
-      vim.g.vimtex_view_method = 'general' -- latex previewer
-      vim.g.vimtex_view_general_viewer = 'SumatraPDF'
-      vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
-      vim.g.vimtex_compiler_method = 'latexmk' -- latexmk for compilation
+      -- Skim for viewing and SyncTeX support
+      vim.g.vimtex_view_method = 'skim'
+
+      -- Avoid auto quickfix on save
+      vim.g.vimtex_quickfix_mode = 0
+
+      -- Use latexmk as compiler (default behavior)
+      vim.g.vimtex_compiler_method = 'latexmk'
+
+      -- Tell VimTeX/latexmk to use xelatex
+      vim.g.vimtex_compiler_latexmk_engines = {
+        _ = '-xelatex', -- ✅ Force xelatex globally inside VimTeX
+      }
+
+      -- Optional: other latexmk options (synctex, nonstop)
       vim.g.vimtex_compiler_latexmk = {
         options = {
-          '-pdf', -- compile directly to pdf
-          '-shell-escape', -- enable this for advanced features
-          '-synctex=1', -- enable synctex for forward and reverse search
-          '-interaction=nonstopmode', -- run in non-stop mnode. no stopping for errors
+          '-shell-escape',
+          '-synctex=1',
+          '-interaction=nonstopmode',
         },
       }
-      vim.g.vimtex_quickfix_mode = 0 -- disables console opening each time on each :w
     end,
   },
 
