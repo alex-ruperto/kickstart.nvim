@@ -90,7 +90,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -111,6 +111,17 @@ vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
+-- LSP Key mappings
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP Hover' }) -- Press K to see full diagnostic message (hover)
+vim.keymap.set('n', '<leader>dh', vim.diagnostic.open_float, { desc = 'Show diagnostic message' }) -- <leader>dh to open a diagnostic float
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Show code actions' }) -- <leader>ca to show code actions
+
+-- (Optional) Map a command to list all diagnostics in the quickfix list:
+vim.keymap.set('n', '<leader>dl', function()
+  vim.diagnostic.setqflist()
+  vim.cmd 'copen'
+end, { desc = 'Open diagnostic list' })
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -1146,7 +1157,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.g.mapleader = '\\'
 require 'alex.options'
 require 'alex.colorscheme'
 require('lazy').setup 'alex.plugins'
