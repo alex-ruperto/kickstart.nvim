@@ -134,8 +134,21 @@ end)
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Run C++ file
-vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:sp | terminal g++ % -o %:r && ./%:r<CR>', { noremap = true, silent = true })
+-- Enable running C++ or .NET
+vim.keymap.set('n', '<leader>r', function()
+  local filename = vim.fn.expand '%:t' -- Get filename, e.g., Program.cs
+  local ext = vim.fn.expand '%:e' -- Get file extension, e.g., cs
+
+  if ext == 'cpp' or ext == 'cc' or ext == 'cxx' then -- If C++ file
+    vim.cmd 'w' -- Save file
+    vim.cmd 'sp | terminal g++ % -o %:r && ./%:r' -- Compile and run C++ file
+  elseif ext == 'cs' then -- If C# file
+    vim.cmd 'w' -- Save file
+    vim.cmd 'sp | terminal dotnet run' -- Run using .NET SDK
+  else
+    print('No run command set for this file type: ' .. ext) -- Notify if unsupported
+  end
+end, { noremap = true, silent = true, desc = 'Smart Run based on filetype' })
 
 -- Enforce 4 space tabstop for C# and CSX files.
 vim.api.nvim_create_autocmd('FileType', {
