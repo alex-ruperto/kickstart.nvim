@@ -219,6 +219,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', { -- create an autocommand for when a buffer's filetype is detected
+  pattern = 'kotlin', -- trigger only for Kotlin filetypes
+  callback = function(ev) -- callback runs when the FileType event fires
+    vim.bo[ev.buf].expandtab = true -- insert spaces when pressing <Tab> (no literal TAB chars)
+    vim.bo[ev.buf].tabstop = 4 -- visual width of a <Tab> in spaces
+    vim.bo[ev.buf].shiftwidth = 4 -- number of spaces used for autoindent and << >> shifting
+    vim.bo[ev.buf].softtabstop = 4 -- how many spaces <Tab>/<BS> counts for in insert mode
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -948,6 +958,7 @@ require('lazy').setup({
     },
     opts = {
       -- configuration goes here
+      lang = 'python3',
     },
   },
 
